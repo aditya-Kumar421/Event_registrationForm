@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'captcha',
     'form',
-    'defender',
+    # 'defender',
     # 'djangosecure',
 ]
 
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'defender.middleware.FailedLoginMiddleware',
+    # 'defender.middleware.FailedLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'register.urls'
