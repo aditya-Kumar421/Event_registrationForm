@@ -55,7 +55,6 @@ class Registration(models.Model):
 
     Second= '2'
     Third= '3'
-    Fourth='4'
 
     one= '1'
     two = '2'
@@ -87,7 +86,6 @@ class Registration(models.Model):
     Year=[
         (Second, '2'),
         (Third, '3'),
-        (Fourth, '4'),
     ]
     section = [
          (one, '1'),
