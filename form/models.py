@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 def validate_akgec_email(value):
         if not value.endswith('@akgec.ac.in'):
             raise ValidationError(
-                _('Only emails with @akgec.ac.in domain are allowed.'),
+                _('Only email with @akgec.ac.in domain is allowed.'),
                 params={'value': value},
             )
 def validate_Phone_digits(value):
@@ -94,11 +94,11 @@ class Registration(models.Model):
     ]
     name = models.CharField(max_length=50, null=False)
     created = models.DateTimeField(auto_now_add=True)
-    student_no=models.IntegerField(validators=[MinValueValidator(2000000),MaxValueValidator(23999999),validate_Student_digits],unique=True, null=False)
+    student_no=models.IntegerField(validators=[MinValueValidator(2100000),MaxValueValidator(22999999),validate_Student_digits],unique=True, null=False)
     branch = models.CharField(max_length=10,null=False , choices=Branch)
-    section = models.CharField(max_length=5,null = False, choices=section)
+    section = models.CharField(max_length=10,null = False, choices=section)
     email=models.EmailField(max_length=40,validators=[validate_akgec_email], null=False, unique=True )
     phone_number =models.IntegerField(validators=[MinValueValidator(1000000000),MaxValueValidator(9999999999), validate_Phone_digits], null=False)
     gender=models.CharField(max_length=50,null=False, choices=Gender)
-    year = models.CharField(max_length=5,null = False, choices=Year)
+    year = models.CharField(max_length=10,null = False, choices=Year)
     residence = models.CharField(max_length=15, null = False, choices=Residence)

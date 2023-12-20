@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+#from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,7 +62,8 @@ ROOT_URLCONF = 'register.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #changes:
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,3 +134,36 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RECAPTCHA_PUBLIC_KEY = '6Lcd2CMpAAAAAKLqwdxjTgnWwzSgAGEgtl0BVOng'
 RECAPTCHA_PRIVATE_KEY = '6Lcd2CMpAAAAAKHPuV4UCQ2I5akmbKTvu36XZ5lm'
 APPEND_SLASH = False
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cloudcomputingcell2@gmail.com'  # Replace with your email address
+EMAIL_HOST_PASSWORD = 'qojn iuaa lrqb zdtm' # Replace with your email password
+
+# import smtplib
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText
+
+# # Set up the SMTP server details
+# smtp_server = 'smtp.gmail.com'
+# smtp_port = 587
+# smtp_username = 'aadikumar496@gmail.com'
+# smtp_password = 'wmhy szrj jfnx pdsl'
+
+# # Create a secure SMTP connection
+# try:
+#     server = smtplib.SMTP(smtp_server, smtp_port)
+#     server.starttls()
+#     server.login(smtp_username, smtp_password)
+
+#     # Send the email
+#     # (code for constructing and sending the email goes here)
+
+#     server.quit()  # Close the SMTP connection
+# except smtplib.SMTPAuthenticationError as e:
+#     print("SMTP Authentication Error:", e)
+
