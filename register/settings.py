@@ -116,20 +116,20 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 
 #Security:
 # 1.Cross-site Scripting (XSS):
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # # 2.SSL redirect:
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # # 3.HTTP Strict Transport Security (HSTS):
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True 
-SECURE_HSTS_PRELOAD = True 
+# SECURE_HSTS_SECONDS = 31536000
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True 
+# SECURE_HSTS_PRELOAD = True 
 
 # # 4.Cross-site request forgery (CSRF) protection:
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 # # 5.CSP:
 # CSP_DEFAULT_SRC = ("'self'", "techbuzz.onrender.com")
