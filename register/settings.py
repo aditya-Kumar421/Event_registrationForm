@@ -59,7 +59,7 @@ WSGI_APPLICATION = 'register.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': config('DB_NAME'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -134,3 +134,5 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 # # 5.CSP:
 # CSP_DEFAULT_SRC = ("'self'", "techbuzz.onrender.com")
 # CSP_SCRIPT_SRC = ("'self'", "scripts.com")
+
+# Error due to SECRET_KEY .env me h aur vo git ignore me h.
