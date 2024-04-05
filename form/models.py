@@ -102,3 +102,6 @@ class Registration(models.Model):
     gender=models.CharField(max_length=50,null=False, choices=Gender)
     year = models.CharField(max_length=10,null = False, choices=Year)
     residence = models.CharField(max_length=15, null = False, choices=Residence)
+
+    def __str__(self):
+        return f"{self.name}'s student no is : {self.student_no}"
