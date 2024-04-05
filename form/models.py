@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 def validate_akgec_email(value):
         if not value.endswith('@akgec.ac.in'):
             raise ValidationError(
-                _('Only email with @akgec.ac.in domain is allowed.'),
+                _('Only college email id is allowed.'),
                 params={'value': value},
             )
 def validate_Phone_digits(value):
@@ -27,6 +27,13 @@ def validate_Student_digits(value):
     if len(value_str) < min_digits or len(value_str) > max_digits:
         raise ValidationError(
             f"Student number must have 7 or 8 digits."
+        )
+def validate_Section_digits(value):
+    min_digits = 0  
+    max_digits = 21 
+    if value < min_digits or value > max_digits:
+        raise ValidationError(
+            f"Section must between 1 to 20."
         )
 # phone_regex = RegexValidator(
 #     regex=r'^\+?91?\d{10,14}$',
@@ -54,11 +61,11 @@ class Registration(models.Model):
     CIVIL = 'CIVIL'
 
     Second= '2'
-    Third= '3'
+    First= '1'
 
-    one= '1'
-    two = '2'
-    three = '3'
+    # one= '1'
+    # two = '2'
+    # three = '3'
 
     Residence=[
         (Hosteler, 'Hosteler'),
@@ -84,19 +91,19 @@ class Registration(models.Model):
         (CIVIL,'CIVIL'),
     ]
     Year=[
+        (First, '1'),
         (Second, '2'),
-        (Third, '3'),
     ]
-    section = [
-         (one, '1'),
-         (two, '2'),
-         (three, '3'),
-    ]
+    # section = [
+    #      (one, '1'),
+    #      (two, '2'),
+    #      (three, '3'),
+    # ]
     name = models.CharField(max_length=50, null=False)
     created = models.DateTimeField(auto_now_add=True)
-    student_no=models.IntegerField(validators=[MinValueValidator(2100000),MaxValueValidator(22999999),validate_Student_digits],unique=True, null=False)
+    student_no=models.IntegerField(validators=[MinValueValidator(2200000),MaxValueValidator(23999999),validate_Student_digits],unique=True, null=False)
     branch = models.CharField(max_length=10,null=False , choices=Branch)
-    section = models.CharField(max_length=10,null = False, choices=section)
+    section = models.IntegerField(default=1,null = False,validators=[MinValueValidator(1),MaxValueValidator(20),validate_Section_digits] )
     email=models.EmailField(max_length=40,validators=[validate_akgec_email], null=False, unique=True )
     phone_number =models.IntegerField(validators=[MinValueValidator(1000000000),MaxValueValidator(9999999999), validate_Phone_digits], null=False)
     gender=models.CharField(max_length=50,null=False, choices=Gender)
@@ -105,3 +112,4 @@ class Registration(models.Model):
 
     def __str__(self):
         return f"{self.name}'s student no is : {self.student_no}"
+    # choices=section
