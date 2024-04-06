@@ -29,11 +29,11 @@ def validate_Student_digits(value):
             f"Student number must have 7 or 8 digits."
         )
 def validate_Section_digits(value):
-    min_digits = 0  
-    max_digits = 21 
+    min_digits = 1
+    max_digits = 20 
     if value < min_digits or value > max_digits:
         raise ValidationError(
-            f"Section must between 1 to 20."
+            f"Section must be between 1 to 20."
         )
 # phone_regex = RegexValidator(
 #     regex=r'^\+?91?\d{10,14}$',

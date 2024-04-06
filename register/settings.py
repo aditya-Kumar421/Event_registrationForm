@@ -116,8 +116,8 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 
 #Security:
 # 1.Cross-site Scripting (XSS):
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # # 2.SSL redirect:
 # SECURE_SSL_REDIRECT = True
@@ -134,5 +134,3 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 # # 5.CSP:
 # CSP_DEFAULT_SRC = ("'self'", "techbuzz.onrender.com")
 # CSP_SCRIPT_SRC = ("'self'", "scripts.com")
-
-# Error due to SECRET_KEY .env me h aur vo git ignore me h.
