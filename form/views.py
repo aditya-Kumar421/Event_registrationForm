@@ -1,8 +1,9 @@
 from .serializers import RegistrationSerializer
-
+from .models import Registration
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 
 import requests
 from django.conf import settings
@@ -13,6 +14,7 @@ from django.contrib.auth.models import auth, User
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
+
 
 class RegistrationList(APIView):
     def post(self, request,*args, **kwargs):
@@ -40,3 +42,43 @@ class RegistrationList(APIView):
             message.send()
             return Response({'success': True, 'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
         return Response({'errors': "reCAPTCHA verification failed"}, status=400)
+
+class RegistrationView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        all_Questions = Registration.objects.order_by("-student_no")
+        serializer = RegistrationSerializer(all_Questions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RegistrationUpdateDeleteView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, student_no):
+        try:
+            raw_student = Registration.objects.get(student_no=student_no)
+        except Registration.DoesNotExist:
+            return Response({"Student not found"})
+        serializer = RegistrationSerializer(raw_student)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, student_no):
+        try:
+            stu = Registration.objects.get(student_no=student_no)
+        except Registration.DoesNotExist:
+            return Response({"Student not found"})
+        serializer = RegistrationSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"msg: Student data Updated successfully!"})
+        return Response(serializer.errors)
+
+    def delete(self, request, student_no):
+        try:
+            stu = Registration.objects.get(student_no=student_no)
+        except Registration.DoesNotExist:
+            return Response({"Student not found"})
+        stu.delete()
+        return Response({"Student detail deleted successfully!"})
+
