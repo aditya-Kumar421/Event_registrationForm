@@ -1,12 +1,12 @@
 from pathlib import Path
 from decouple import config, Csv
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS= ["*"]
 
 
 INSTALLED_APPS = [
@@ -20,11 +20,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'captcha',
     'form',
-    # 'defender',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -32,7 +32,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'defender.middleware.FailedLoginMiddleware',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -63,15 +62,6 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis:6379',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,20 +80,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
-APPEND_SLASH = config('APPEND_SLASH', default=False, cast=bool)
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -118,19 +106,14 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 # 1.Cross-site Scripting (XSS):
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SAMESITE = 'strict'
+SESSION_COOKIE_SAMESITE = 'strict'
 
-# # 2.SSL redirect:
-# SECURE_SSL_REDIRECT = True
-
-# # 3.HTTP Strict Transport Security (HSTS):
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True 
-# SECURE_HSTS_PRELOAD = True 
-
-# # 4.Cross-site request forgery (CSRF) protection:
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-
-# # 5.CSP:
-# CSP_DEFAULT_SRC = ("'self'", "techbuzz.onrender.com")
-# CSP_SCRIPT_SRC = ("'self'", "scripts.com")
+#For production set below both lines to True
+CSRF_COOKIE_HTTPONLY= True
+SESSION_COOKIE_HTTPONLY= True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True  

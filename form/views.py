@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.contrib.auth.models import auth, User
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from django.conf import settings
+
 
 
 class RegistrationList(APIView):
@@ -44,16 +44,19 @@ class RegistrationList(APIView):
         return Response({'errors': "reCAPTCHA verification failed"}, status=400)
 
 class RegistrationView(APIView):
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
 
     def get(self, request):
         all_Questions = Registration.objects.order_by("-student_no")
         serializer = RegistrationSerializer(all_Questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class RegisteredEmail(APIView):
+    def get(self, request):
+        emails = Registration.objects.all().values_list('email', flat=True)
+        return Response(emails, status=status.HTTP_200_OK)
 
 class RegistrationUpdateDeleteView(APIView):
-    permission_classes = [IsAdminUser]
 
     def get(self, request, student_no):
         try:
