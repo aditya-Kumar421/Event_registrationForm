@@ -1,5 +1,6 @@
-from .serializers import RegistrationSerializer
+from .serializers import RegistrationSerializer, EmailSerializer
 from .models import Registration
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -7,8 +8,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 import requests
-from django.conf import settings
 
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.models import auth, User
@@ -86,3 +87,19 @@ class RegistrationUpdateDeleteView(APIView):
         stu.delete()
         return Response({"Student detail deleted successfully!"})
 
+
+class SendEmailView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = EmailSerializer(data=request.data)
+        if serializer.is_valid():
+            emails = serializer.validated_data['emails']
+            email_from = settings.EMAIL_HOST_USER
+            subject = " Confirmation Nimbus Event Payment"
+            html_template = 'register_email.html'
+            email_html_message = render_to_string(html_template)
+            email_message = EmailMessage(subject, email_html_message, email_from, emails)
+            email_message.content_subtype = "html" 
+            email_message.send()
+            
+            return Response({"message": "Emails sent successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

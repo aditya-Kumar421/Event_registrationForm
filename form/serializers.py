@@ -9,3 +9,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'id',
             'created',
         ]
+
+        
+class EmailSerializer(serializers.Serializer):
+    emails = serializers.ListField(
+        child=serializers.EmailField(),
+        allow_empty=False
+    )
