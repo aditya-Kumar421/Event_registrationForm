@@ -78,16 +78,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    ),
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '10/day',  
-        'user': '50/day',  
-    }
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_THROTTLE_CLASSES': (
+#         'rest_framework.throttling.AnonRateThrottle',
+#         'rest_framework.throttling.UserRateThrottle',
+#     ),
+#     'DEFAULT_THROTTLE_RATES': {
+#         'anon': '10/day',  
+#         'user': '50/day',  
+#     }
+# }
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -114,16 +114,16 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 
 #Security:
 # 1.Cross-site Scripting (XSS):
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SAMESITE = 'strict'
-SESSION_COOKIE_SAMESITE = 'strict'
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# CSRF_COOKIE_SAMESITE = 'strict'
+# SESSION_COOKIE_SAMESITE = 'strict'
 
 #For production set below both lines to True
-CSRF_COOKIE_HTTPONLY= True
-SESSION_COOKIE_HTTPONLY= True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True  
+# CSRF_COOKIE_HTTPONLY= True
+# SESSION_COOKIE_HTTPONLY= True
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 31536000
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True  
