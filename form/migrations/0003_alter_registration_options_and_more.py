@@ -41,11 +41,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='registration',
             name='section',
-            field=models.IntegerField(default=1, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(20), form.models.validate_Section_digits]),
+            field=models.IntegerField(),
         ),
         migrations.AlterField(
             model_name='registration',
             name='student_no',
-            field=models.IntegerField(unique=True, validators=[django.core.validators.MinValueValidator(2200000), django.core.validators.MaxValueValidator(23999999), form.models.validate_Student_digits]),
+            field=models.IntegerField(unique=True),
         ),
     ]

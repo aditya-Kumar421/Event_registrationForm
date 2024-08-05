@@ -15,12 +15,41 @@ from django.contrib import messages
 from django.contrib.auth.models import auth, User
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-
+from django.utils.translation import gettext_lazy as _
 
 class RegistrationList(APIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     def post(self, request,*args, **kwargs):
+        def validate_phone_digits(value):
+            min_digits = 10  
+            max_digits = 10  
+            value_str = str(value)
+            if len(value_str) < min_digits or len(value_str) > max_digits:
+                return Response({'error': "Contact number must have 10 digits."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        def validate_student_digits(value):
+            min_digits = 7  
+            max_digits = 8  
+            value_str = str(value)
+            if len(value_str) < min_digits or len(value_str) > max_digits:
+                return Response({'error': "Student number must have 7 or 8 digits."}, status=status.HTTP_400_BAD_REQUEST)
+            
         serializer = RegistrationSerializer(data=request.data)
+
+        # Email validation
+        if not request.data.get('email', '').endswith('@akgec.ac.in'):
+            return Response({'error': _('Only college email id is allowed.')}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Phone number validation
+        phone_validation_response = validate_phone_digits(request.data.get('phone', ''))
+        if phone_validation_response:
+            return phone_validation_response
+        
+        # Student number validation
+        student_validation_response = validate_student_digits(request.data.get('student_no', ''))
+        if student_validation_response:
+            return student_validation_response
+
         captcha_token = request.data.get('captcha', '')
         data = {
             'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -28,9 +57,11 @@ class RegistrationList(APIView):
         }
         response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
         result = response.json()
+
         if result['success']:
             serializer.is_valid(raise_exception=True)
             serializer.save()
+
             name_value = serializer.validated_data.get('name')
             mydict = {'name': name_value}    
             html_template = 'register_email.html'
@@ -43,7 +74,7 @@ class RegistrationList(APIView):
             message.content_subtype = 'html'
             message.send()
             return Response({'success': True, 'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
-        return Response({'errors': "reCAPTCHA verification failed"}, status=400)
+        return Response({'error': "reCAPTCHA verification failed"}, status=400)
 
 class RegistrationView(APIView):
     # permission_classes = [IsAdminUser]

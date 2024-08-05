@@ -15,16 +15,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='registration',
             name='section',
-            field=models.CharField(choices=[('1', '1'), ('2', '2'), ('3', '3')], max_length=10),
+            field=models.CharField( max_length=10),
         ),
         migrations.AlterField(
             model_name='registration',
             name='student_no',
-            field=models.IntegerField(unique=True, validators=[django.core.validators.MinValueValidator(2100000), django.core.validators.MaxValueValidator(22999999), form.models.validate_Student_digits]),
+            field=models.IntegerField(unique=True),
         ),
         migrations.AlterField(
             model_name='registration',
             name='year',
-            field=models.CharField(choices=[('2', '2'), ('3', '3')], max_length=10),
+            field=models.CharField( max_length=10),
         ),
     ]
