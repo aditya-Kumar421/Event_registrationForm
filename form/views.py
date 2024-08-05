@@ -21,17 +21,18 @@ class RegistrationList(APIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     def post(self, request,*args, **kwargs):
         def validate_phone_digits(value):
-            min_digits = 10  
-            max_digits = 10  
             value_str = str(value)
-            if len(value_str) < min_digits or len(value_str) > max_digits:
+            if len(value_str) != 10:
                 return Response({'error': "Contact number must have 10 digits."}, status=status.HTTP_400_BAD_REQUEST)
         
         def validate_student_digits(value):
             min_digits = 7  
-            max_digits = 8  
+            max_digits = 9  
             value_str = str(value)
+            
             if len(value_str) < min_digits or len(value_str) > max_digits:
+                if not value_str.startswith('23'):
+                    return Response({'error': "Student number is incorrect."}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({'error': "Student number must have 7 or 8 digits."}, status=status.HTTP_400_BAD_REQUEST)
             
         serializer = RegistrationSerializer(data=request.data)
@@ -41,7 +42,7 @@ class RegistrationList(APIView):
             return Response({'error': _('Only college email id is allowed.')}, status=status.HTTP_400_BAD_REQUEST)
         
         # Phone number validation
-        phone_validation_response = validate_phone_digits(request.data.get('phone', ''))
+        phone_validation_response = validate_phone_digits(request.data.get('phone_number', ''))
         if phone_validation_response:
             return phone_validation_response
         
