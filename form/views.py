@@ -67,7 +67,7 @@ class RegistrationList(APIView):
             mydict = {'name': name_value}    
             html_template = 'register_email.html'
             html_message = render_to_string(html_template, context = mydict)
-            subject = 'conformation mail regarding event registration'
+            subject = 'confirmation mail regarding event registration'
             email_from = settings.EMAIL_HOST_USER
             email_data = serializer.validated_data.get('email')
             recipient_list = [email_data]
