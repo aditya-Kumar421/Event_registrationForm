@@ -4,9 +4,11 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['registrationportal-hrxz.onrender.com', '127.0.0.1']
+# SECRET_KEY = config('SECRET_KEY')
+# DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG= False
+SECRET_KEY= 'django-insecure-n^ht9b*tcs5b+_6jximpz$$%lp&bby@fo$$76afmcxuicj1tt1'
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -100,16 +102,28 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+# RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST', default='localhost')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+# EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cloudcomputingcell2@gmail.com'
+EMAIL_HOST_PASSWORD = 'qojn iuaa lrqb zdtm'
+
+
+RECAPTCHA_PUBLIC_KEY = '6Lcd2CMpAAAAAKLqwdxjTgnWwzSgAGEgtl0BVOng'
+RECAPTCHA_PRIVATE_KEY = '6Lcd2CMpAAAAAKHPuV4UCQ2I5akmbKTvu36XZ5lm'
+
 
 
 #Security:
