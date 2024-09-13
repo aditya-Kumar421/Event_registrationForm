@@ -1,6 +1,7 @@
 from pathlib import Path
 from decouple import config, Csv
 import os
+
 import dj_database_url # type: ignore
 
 
