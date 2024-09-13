@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from rest_framework.exceptions import ValidationError
 
 import requests
 
@@ -17,39 +18,36 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.utils.translation import gettext_lazy as _
 
+
 class RegistrationList(APIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     def post(self, request,*args, **kwargs):
+        serializer = RegistrationSerializer(data=request.data)
         def validate_phone_digits(value):
             value_str = str(value)
             if len(value_str) != 10:
-                return Response({'error': "Contact number must have 10 digits."}, status=status.HTTP_400_BAD_REQUEST)
+                raise ValidationError("Contact number must have 10 digits.")
         
         def validate_student_digits(value):
-            min_digits = 7  
-            max_digits = 9  
             value_str = str(value)
             
-            if len(value_str) < min_digits or len(value_str) > max_digits:
-                if not value_str.startswith('23'):
-                    return Response({'error': "Student number is incorrect."}, status=status.HTTP_400_BAD_REQUEST)
-                return Response({'error': "Student number must have 7 or 8 digits."}, status=status.HTTP_400_BAD_REQUEST)
-            
-        serializer = RegistrationSerializer(data=request.data)
+            if not value_str.startswith('23'):
+                raise ValidationError("Student number should start with '23'.")
+
+        # Validate data
+        phone_number = request.data.get('phone_number', '')
+        student_no = request.data.get('student_no', '')
+
+        try:
+            validate_phone_digits(phone_number)
+            validate_student_digits(student_no)
+        except ValidationError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Email validation
         if not request.data.get('email', '').endswith('@akgec.ac.in'):
             return Response({'error': _('Only college email id is allowed.')}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Phone number validation
-        phone_validation_response = validate_phone_digits(request.data.get('phone_number', ''))
-        if phone_validation_response:
-            return phone_validation_response
-        
-        # Student number validation
-        student_validation_response = validate_student_digits(request.data.get('student_no', ''))
-        if student_validation_response:
-            return student_validation_response
+
 
         captcha_token = request.data.get('captcha', '')
         data = {
