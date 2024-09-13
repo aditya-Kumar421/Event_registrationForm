@@ -9,7 +9,7 @@ class Registration(models.Model):
     branch = models.CharField(max_length=10,null=False)
     section = models.IntegerField(null = False )
     email=models.EmailField(max_length=40, null=False, unique=True )
-    phone_number =models.IntegerField(null=False)
+    phone_number = models.CharField(max_length=11, null=False)
     hackerRank_username=models.CharField(max_length=100,null=False)
 
     class Meta:
