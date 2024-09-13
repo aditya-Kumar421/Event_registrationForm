@@ -1,6 +1,9 @@
 from pathlib import Path
 from decouple import config, Csv
 import os
+import dj_database_url # type: ignore
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -55,13 +58,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'register.wsgi.application'
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+DATABASE_LINK = config('DATABASE_LINK')
+DATABASES["default"] = dj_database_url.parse(DATABASE_LINK)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
