@@ -11,6 +11,7 @@ class Registration(models.Model):
     email=models.EmailField(max_length=40, null=False, unique=True )
     phone_number = models.CharField(max_length=11, null=False)
     hackerRank_username=models.CharField(max_length=100,null=False)
+    residence = models.CharField(max_length=100,null=False)
 
     class Meta:
         verbose_name_plural = "Registered User"
