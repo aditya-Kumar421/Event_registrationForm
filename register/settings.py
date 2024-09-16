@@ -10,7 +10,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ["vercel.app", "onrender.com"]
+ALLOWED_HOSTS = [
+    'registrationform308.vercel.app', 
+    'registrationportal-hrxz.onrender.com',
+    'cccakgec.live'
+]
 
 
 INSTALLED_APPS = [
