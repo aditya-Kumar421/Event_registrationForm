@@ -17,12 +17,17 @@ from django.contrib.auth.models import auth, User
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.utils.translation import gettext_lazy as _
+import re
+from django.core.exceptions import ValidationError
+
 
 
 class RegistrationList(APIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
-    def post(self, request,*args, **kwargs):
+
+    def post(self, request, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)
+        
         def validate_phone_digits(value):
             value_str = str(value)
             if len(value_str) != 10:
@@ -30,24 +35,37 @@ class RegistrationList(APIView):
         
         def validate_student_digits(value):
             value_str = str(value)
-            
             if not value_str.startswith('23'):
                 raise ValidationError("Student number should start with '23'.")
+            
+        def validate_email(email):
+            pattern = r'^([a-zA-Z]+)\+(\d+)@akgec\.ac\.in$'
+            
+            match = re.match(pattern, email)
+            if not match:
+                raise ValidationError('Email must be in the format string+studentnumber@akgec.ac.in')
 
-        # Validate data
+            string_part, student_number = match.groups()
+            if not student_number.isdigit():
+                raise ValidationError('The student number must be numeric.')
+
+        # Validate phone number and student number
         phone_number = request.data.get('phone_number', '')
         student_no = request.data.get('student_no', '')
 
+
+        # Email validation
+        email = request.data.get('email', '')
+        if not email.endswith('@akgec.ac.in'):
+            return Response({'error': 'Only college email id is allowed.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
             validate_phone_digits(phone_number)
             validate_student_digits(student_no)
+            validate_email(email)
         except ValidationError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Email validation
-        if not request.data.get('email', '').endswith('@akgec.ac.in'):
-            return Response({'error': _('Only college email id is allowed.')}, status=status.HTTP_400_BAD_REQUEST)
-
+        
 
         captcha_token = request.data.get('captcha', '')
         data = {
