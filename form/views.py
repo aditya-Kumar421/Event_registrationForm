@@ -39,11 +39,11 @@ class RegistrationList(APIView):
                 raise ValidationError("Student number should start with '23'.")
             
         def validate_email(email):
-            pattern = r'^([a-zA-Z]+)\+(\d+)@akgec\.ac\.in$'
+            pattern = r'^([a-z]+)\+(\d+)@akgec\.ac\.in$'
             
             match = re.match(pattern, email)
             if not match:
-                raise ValidationError('Email must be in the format string+studentnumber@akgec.ac.in')
+                raise ValidationError('Email must be in the format namestudentnumber@akgec.ac.in')
 
             string_part, student_number = match.groups()
             if not student_number.isdigit():
@@ -62,7 +62,7 @@ class RegistrationList(APIView):
         try:
             validate_phone_digits(phone_number)
             validate_student_digits(student_no)
-            validate_email(email)
+            # validate_email(email)
         except ValidationError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
