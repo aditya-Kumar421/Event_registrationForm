@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS = [ "localhost", "127.0.0.1", 
     'registrationform308.vercel.app', 
     'registrationportal-hrxz.onrender.com',
     'cccakgec.live'
@@ -43,7 +43,7 @@ MIDDLEWARE = [
 ]
 
 # CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = ["https://registrationportal-hrxz.onrender.com", "https://registrationform308.vercel.app", "https://cccakgec.live"]
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000","https://registrationportal-hrxz.onrender.com", "https://registrationform308.vercel.app", "https://cccakgec.live"]
 ROOT_URLCONF = 'register.urls'
 
 TEMPLATES = [
@@ -96,8 +96,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/day',  
-        'user': '7/day', 
+        'anon': '7/day',  
+        'user': '15/day', 
     },
 }
 
@@ -127,16 +127,16 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 
 #Security:
 # 1.Cross-site Scripting (XSS):
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SAMESITE = 'strict'
-SESSION_COOKIE_SAMESITE = 'strict'
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# CSRF_COOKIE_SAMESITE = 'strict'
+# SESSION_COOKIE_SAMESITE = 'strict'
 
-#For production set below both lines to True
-CSRF_COOKIE_HTTPONLY= True
-SESSION_COOKIE_HTTPONLY= True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True  
+# #For production set below both lines to True
+# CSRF_COOKIE_HTTPONLY= True
+# SESSION_COOKIE_HTTPONLY= True
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 31536000
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True  
