@@ -1,4 +1,4 @@
-from .serializers import RegistrationSerializer, EmailSerializer
+from .serializers import RegistrationSerializer, EmailSerializer, SingleEmailSerializer
 from .models import Registration
 
 from rest_framework.response import Response
@@ -135,6 +135,22 @@ class RegistrationUpdateDeleteView(APIView):
         stu.delete()
         return Response({"Student detail deleted successfully!"})
 
+
+class SendSingleEmailView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = SingleEmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email'] 
+            email_from = settings.EMAIL_HOST_USER
+            subject = "SPOCC'24 Registration Confirmation 🚀 Event Details Inside!"
+            html_template = 'register_email.html'
+            email_html_message = render_to_string(html_template)
+            email_message = EmailMessage(subject, email_html_message, email_from, [email])  
+            email_message.content_subtype = "html" 
+            email_message.send()
+            
+            return Response({"message": "Email sent successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SendEmailView(APIView):
     def post(self, request, *args, **kwargs):

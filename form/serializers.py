@@ -16,3 +16,6 @@ class EmailSerializer(serializers.Serializer):
         child=serializers.EmailField(),
         allow_empty=False
     )
+
+class SingleEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
