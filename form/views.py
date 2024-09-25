@@ -158,8 +158,8 @@ class SendEmailView(APIView):
         if serializer.is_valid():
             emails = serializer.validated_data['emails']
             email_from = settings.EMAIL_HOST_USER
-            subject = "SPOCC'24 Registration Confirmation 🚀 Event Details Inside!"
-            html_template = 'register_email.html'
+            subject = "SPOCC'24 ANNOUNCEMENT"
+            html_template = 'success_email.html'
             email_html_message = render_to_string(html_template)
             email_message = EmailMessage(subject, email_html_message, email_from, emails)
             email_message.content_subtype = "html" 
