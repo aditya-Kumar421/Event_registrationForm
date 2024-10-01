@@ -72,8 +72,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-DATABASE_LINK = config('DATABASE_LINK')
-DATABASES["default"] = dj_database_url.parse(DATABASE_LINK)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
